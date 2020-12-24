@@ -1,0 +1,86 @@
+<%- include('../partials/header') %>
+<div class="container-sm">
+    <form class="my-4 user">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+          <div id="email-wrong"></div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">First Name</label>
+          <input type="text" name="firsName" class="form-control" id="first-name">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Last Name</label>
+          <input type="text" name="lastName" class="form-control" id="last-name">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password">
+          <div id="password-wrong"></div>
+        </div>
+        <div class="mb-3">
+          <label for="confirm-password" class="form-label">Confirm password</label>
+          <div id="confirm-wrong"></div>
+          <input type="password" class="form-control" id="confirm-password">
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+  const $ = (id) => {
+    return document.getElementById(id)
+  }
+
+  const formUsers = document.querySelector('form.user');
+  const confirmWrong = $('confirm-wrong');
+  const passWrong = $('password-wrong');
+  const emailWrong = $('email-wrong');
+
+  formUsers.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // reset error
+    confirmWrong.textContent = '';
+    passWrong.textContent = '';
+    emailWrong.textContent = '';
+
+    const email = formUsers.email.value;
+    const password = formUsers.password.value;
+    const firstName = $('first-name').value;
+    const lastName = $('last-name').value;
+    const confirmPass = $('confirm-password').value;
+
+    if (password === confirmPass) {
+      try {
+      const response = await fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, password, firstName, lastName })
+      });
+      const data = await response.json();
+      
+      if (data.errors) {
+        passWrong.textContent = data.errors.password;
+        emailWrong.textContent = data.errors.email;
+      }
+
+      if (data.user) {
+        window.location.assign('/');
+      }
+
+    }
+      catch (err) {
+        console.log(err)
+      }
+    } else {
+      confirmWrong.textContent = 'different password';
+    }
+    
+  })
+</script>
+
+<%- include('../partials/footer') %>

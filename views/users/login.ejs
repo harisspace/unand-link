@@ -1,0 +1,63 @@
+<%- include('../partials/header') %>
+<div class="container-sm">
+    <form class="my-4 user">
+        <div class="mb-3">
+          <label for="email-login" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email-login" aria-describedby="emailHelp">
+          <div id="email-wrong"></div>
+        </div>
+        <div class="mb-3">
+          <label for="password-login" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password-login">
+          <div id="password-wrong"></div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+  const $ = (id) => {
+    return document.getElementById(id)
+  }
+
+  const formUsers = document.querySelector('form.user');
+  const passWrong = $('password-wrong');
+  const emailWrong = $('email-wrong');
+
+  formUsers.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // reset errors
+    passWrong.textContent = '';
+    emailWrong.textContent = '';
+
+    const email = $('email-login').value;
+    const password = $('password-login').value;
+
+    try {
+      const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    
+    if (data.errors) {
+      emailWrong.textContent = data.errors.email;
+      passWrong.textContent = data.errors.password;
+    }
+
+    if (data.user) {
+      window.location.assign('/');
+    }
+
+  }
+    catch (err) {
+      console.log(err)
+    }
+  })
+</script>
+
+<%- include('../partials/footer') %>
