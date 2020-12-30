@@ -5,7 +5,7 @@ const requireAuth = (req, res, next) => {
     const token = req.cookies.jwt;
     
     if (token) {
-        jwt.verify(token, 'this is secret', (err, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
             if (err) {
                 console.log(err);
                 res.redirect('/login');
@@ -22,7 +22,7 @@ const checkUser = (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (token) {
-        jwt.verify(token, 'this is secret', (err, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
             if (err) {
                 console.log(err);
                 res.locals.user = null;
@@ -43,7 +43,7 @@ const checkToken = (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (token) {
-        jwt.verify(token, 'this is secret', (err, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
             if (err) {
                 next();
             } else {

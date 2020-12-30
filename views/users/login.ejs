@@ -1,9 +1,12 @@
 <%- include('../partials/header') %>
-<div class="container-sm">
-    <form class="my-4 user">
+<div class="container-sm d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow p-3 bg-white rounded" style="width: 25rem;">
+    <div class="card-body">
+      <h5 class="card-title text-center">Login</h5>
+      <form class="my-4 user">
         <div class="mb-3">
           <label for="email-login" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email-login" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="email-login">
           <div id="email-wrong"></div>
         </div>
         <div class="mb-3">
@@ -15,6 +18,9 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+    </div>
+  </div>
+   
 </div>
 
 <script>
