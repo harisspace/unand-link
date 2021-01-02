@@ -4,6 +4,7 @@ const userRouter = require('./routes/userRoutes');
 const { checkUser } = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
 const linkRouter = require('./routes/linkRoutes');
+const { urlencoded } = require('express');
 require('dotenv').config();
 
 const app = express();
@@ -25,6 +26,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useCr
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }))
 
 // register view engine
 app.set('view engine', 'ejs');

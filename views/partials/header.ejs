@@ -16,7 +16,14 @@
 
               <% if (user) { %>
                 <li class="nav-item">
-                  <span class="nav-link" href="#">Welcome, <%= user.firstName %> </span>
+                  <span class="nav-link" href="#">Welcome, <%= user.firstName %> 
+                    <% if (user.lastName) { %>
+                      <%= user.lastName %> 
+                      <% } %>  
+                  </span>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/my-links">My Links</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/logout">Logout</a>

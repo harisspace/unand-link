@@ -73,6 +73,7 @@ module.exports.login_post = async (req, res) => {
     try {
         const user = await User.login(email, password);
         res.cookie('jwt', createToken(user._id), { maxAge: maxAge * 1000 });
+        console.log(user)
         res.status(200).json({ user: user.firstName })
     }
     catch (err) {

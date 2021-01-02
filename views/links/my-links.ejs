@@ -1,0 +1,52 @@
+<%- include('../partials/header') %> 
+
+<div class="container my-3">
+    <h1 class="text-center my-3">All Links that I have</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Full-Link</th>
+                <th scope="col">Short-Link</th>
+                <th scope="col">Clicks</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% let counter = 1 %> 
+            <% linkDetails.forEach(linkDetail => { %>
+                <tr>
+                    <th> <%= counter++ %> </th>
+                    <td> <%= linkDetail.fullLink %> </td>
+                    <td> <a href="/redirect/<%= linkDetail.shortLink %>"> <%= linkDetail.shortLink %> </a> </td>
+                    <td> <%= linkDetail.clicks %> </td>
+                    <td>
+                        <button class="btn btn-primary update" data-id="<%= linkDetail._id %>">Update</button>
+                        <button class="btn btn-danger delete" data-id="<%= linkDetail._id %>">Delete</button>
+                    </td>
+                </tr>
+            <% }) %> 
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const removes = document.querySelectorAll('button.delete');
+    removes.forEach(remove => {
+        remove.addEventListener('click', function(e) {
+            let id = remove.dataset.id;
+            const endpoint = `/delete/${id}`;
+
+            fetch(endpoint, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then(data => window.location.assign(data.redirect))
+                    .catch(err => {
+                        console.log(err)
+                    })
+        })
+    })
+</script>
+
+<%- include('../partials/footer') %> 
