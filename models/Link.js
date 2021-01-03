@@ -17,7 +17,7 @@ const linkSchema = new Schema({
     author: {
         type: String,
         required: true,
-        default: 'haris'
+        default: 'human'
     },
     clicks: {
         type: Number,
