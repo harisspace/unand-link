@@ -119,3 +119,18 @@ module.exports.link_delete = (req, res) => {
             res.json({ err })
         })
 }
+
+module.exports.link_update = async (req, res) => {
+    const id = req.params.id;
+    let { fullLink, shortLink } = req.body;
+    
+    try {
+        await Link.findOneAndUpdate({ _id: id }, { fullLink, shortLink }, {
+            new: true,
+            useFindAndModify: false
+        });
+            res.status(200).redirect('/my-links');
+    } catch(err) {
+        res.status(404).json({ error: 'cannot update' })
+    }
+}

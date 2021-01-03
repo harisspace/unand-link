@@ -9,5 +9,6 @@ router.post('/shortUrl', requireAuth, linkController.shortUrl_post);
 router.get('/my-links', requireAuth, linkController.myLinks_get);
 router.get('/redirect/:shortLink', linkController.shortUrl_get);
 router.delete('/delete/:id', requireAuth, linkController.link_delete);
+router.post('/update/:id', requireAuth, linkController.link_update);
 
 module.exports = router;

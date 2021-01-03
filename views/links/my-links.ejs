@@ -14,27 +14,66 @@
         </thead>
         <tbody>
             <% let counter = 1 %> 
-            <% linkDetails.forEach(linkDetail => { %>
-                <tr>
-                    <th> <%= counter++ %> </th>
-                    <td> <%= linkDetail.fullLink %> </td>
-                    <td> <a href="/redirect/<%= linkDetail.shortLink %>"> <%= linkDetail.shortLink %> </a> </td>
-                    <td> <%= linkDetail.clicks %> </td>
-                    <td>
-                        <button class="btn btn-primary update" data-id="<%= linkDetail._id %>">Update</button>
-                        <button class="btn btn-danger delete" data-id="<%= linkDetail._id %>">Delete</button>
-                    </td>
-                </tr>
-            <% }) %> 
+            <% if (linkDetails.length) { %> 
+                <% linkDetails.forEach(linkDetail => { %>
+                    <tr>
+                        <th> <%= counter++ %> </th>
+                        <td> <%= linkDetail.fullLink %> </td>
+                        <td> <a href="/redirect/<%= linkDetail.shortLink %>"> <%= linkDetail.shortLink %> </a> </td>
+                        <td> <%= linkDetail.clicks %> </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%= linkDetail.shortLink %>">
+                                Update
+                            </button>
+                            
+                            <!-- modal -->
+                            <div class="modal fade" id="<%= linkDetail.shortLink %>" tabindex="-1" aria-labelledby="<%= linkDetail.shortLink %>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="<%= linkDetail.shortLink %>Label">Update</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" action="/update/<%= linkDetail._id %> ">
+                                            <div class="mb-3>
+                                                <label for="full-link" class="form-label">Full link</label>
+                                                <input type="text" value="<%= linkDetail.fullLink %>" name="fullLink" required placeholder="Full link" class="form-control">
+                                            </div>
+                                            <div class="mb-3>
+                                                <label for="short-link" class="form-label">Short link</label>
+                                                <div id="short"></div>
+                                                <input value="<%= linkDetail.shortLink %> " type="text" required name="shortLink" value="localhost:3000/" placeholder="Short link" class="form-control">
+                                            </div>
+                                        
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" data-id="<%= linkDetail._id %>" class="btn btn-primary update">Save changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger delete" data-id="<%= linkDetail._id %>">Delete</button>
+                        </td>
+                    </tr>
+                <% }) %> 
+                
         </tbody>
     </table>
+    <% } else { %> 
+        <h3 class="text-center">You dont have link yet</h3>
+        <% } %> 
+
+    
 </div>
 
 <script>
     const removes = document.querySelectorAll('button.delete');
     removes.forEach(remove => {
         remove.addEventListener('click', function(e) {
-            let id = remove.dataset.id;
+            const id = remove.dataset.id;
             const endpoint = `/delete/${id}`;
 
             fetch(endpoint, {
@@ -47,6 +86,7 @@
                     })
         })
     })
+
 </script>
 
 <%- include('../partials/footer') %> 
